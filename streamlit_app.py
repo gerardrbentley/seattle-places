@@ -46,33 +46,33 @@ def filter_data(
         if min_rating is not None and row.rating < min_rating:
             continue
         good_data.append(row)
-    return pd.DataFrame(good_data).drop("record_id", axis=1)
+    df = pd.DataFrame(good_data)
+    if len(df):
+        return df.drop("record_id", axis=1)
+    else:
+        return df
 
 
-with st.expander("Filter Locations: ", True):
-    selected_filters = st.multiselect(
-        "Filter Options",
-        ["Categories", "Tags", "Min Price", "Max Price", "Min Rating"],
-        ["Categories"],
-    )
-    if "Categories" in selected_filters:
+with st.expander("Filter Locations: ", False):
+    if st.checkbox("Categories", True):
         selected_categories = st.multiselect("Categories", categories, categories)
     else:
         selected_categories = set()
-    if "Tags" in selected_filters:
+    if st.checkbox("Tags"):
         selected_tags = st.multiselect("Tags", tags, None)
     else:
         selected_tags = set()
-    if "Min Price" in selected_filters:
-        min_price = st.number_input("Min Price ($)", 0)
+    if st.checkbox("Min Price"):
+        min_price = st.number_input("Min Price ($)", 0, value=10, step=5)
     else:
         min_price = None
-    if "Max Price" in selected_filters:
-        max_price = st.number_input("Max Price ($)", 0)
+    if st.checkbox("Max Price"):
+        max_price = st.number_input("Max Price ($)", 0, value=30, step=5)
     else:
         max_price = None
-    if "Min Rating" in selected_filters:
-        min_rating = st.number_input("Min Rating (*)", 0, 5)
+
+    if st.checkbox("Min Rating"):
+        min_rating = st.number_input("Min Rating (*)", 0.0, 5.0, value=4.0, step=0.5)
     else:
         min_rating = None
 
