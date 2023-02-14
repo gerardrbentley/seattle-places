@@ -4,9 +4,7 @@ from typing import Dict, Tuple
 
 import httpx
 import toml
-from geopy.geocoders import Nominatim
 
-geolocator = Nominatim(user_agent="sea_reverse")
 creds = toml.load(".streamlit/secrets.toml")
 pocketbase_url = creds.get("pocketbase_url")
 pocketbase_username = creds.get("pocketbase_username")
