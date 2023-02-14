@@ -55,40 +55,44 @@ def filter_data(
         return df
 
 
-with st.expander("Filter Locations: ", False):
-    if st.checkbox("Categories", True):
-        selected_categories = st.multiselect("Categories", categories, categories)
-    else:
-        selected_categories = set()
-    if st.checkbox("Tags"):
-        selected_tags = st.multiselect("Tags", tags, None)
-    else:
-        selected_tags = set()
-    if st.checkbox("Price Range"):
-        min_price, max_price = st.slider(
-            "Cost Per Person Range", 0, 50, value=[0, 50], step=5
-        )
-    else:
-        min_price, max_price = None, None
-
-    if st.checkbox("Min Rating"):
-        min_rating = st.number_input("Min Rating (*)", 0.0, 5.0, value=4.0, step=0.5)
-    else:
-        min_rating = None
-
-    filtered_data = filter_data(
-        list(data.values()),
-        set(selected_categories),
-        set(selected_tags),
-        min_price,
-        max_price,
-        min_rating,
+if st.sidebar.checkbox("Categories", True):
+    selected_categories = st.sidebar.multiselect("Categories", categories, categories)
+else:
+    selected_categories = set()
+if st.sidebar.checkbox("Tags"):
+    selected_tags = st.sidebar.multiselect("Tags", tags, None)
+else:
+    selected_tags = set()
+if st.sidebar.checkbox("Price Range"):
+    min_price, max_price = st.sidebar.slider(
+        "Cost Per Person Range", 0, 50, value=[0, 50], step=5
     )
-    st.dataframe(filtered_data)
+else:
+    min_price, max_price = None, None
 
+if st.sidebar.checkbox("Min Rating"):
+    min_rating = st.sidebar.number_input(
+        "Min Rating (*)", 0.0, 5.0, value=4.0, step=0.5
+    )
+else:
+    min_rating = None
+
+filtered_data = filter_data(
+    list(data.values()),
+    set(selected_categories),
+    set(selected_tags),
+    min_price,
+    max_price,
+    min_rating,
+)
+
+
+warning_block = st.empty()
 
 left_col, right_col = st.columns(2)
 
+with st.expander("Filtered Locations: ", False):
+    st.dataframe(filtered_data)
 fg = folium.FeatureGroup(name="Seattle Locations")
 m = folium.Map(location=CENTER_START, zoom_start=ZOOM_START)
 
@@ -139,12 +143,17 @@ with left_col:
         feature_group_to_add=fg,
     )
 
-
 if (
     map_selection.get("last_object_clicked_tooltip") is None
     and st.session_state.get(SELECTED_LOCATION) is None
 ):
-    st.warning("Select a location to view details")
+    warning_block.warning(
+        """\
+Select a location on the map to view details 📍
+
+Scroll down to view a table of all locations 🗺
+"""
+    )
     st.stop()
 
 if (
