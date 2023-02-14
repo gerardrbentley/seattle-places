@@ -14,7 +14,7 @@ SELECTED_LOCATION = "selected_location"
 CENTER_START = [47.6142, -122.3211]
 ZOOM_START = 16
 
-st.set_page_config("Seattle Places", layout="wide")
+st.set_page_config(page_title="Seattle Places", page_icon="🍻", layout="wide", initial_sidebar_state="collapsed")
 
 st.header("Seattle Places")
 
@@ -150,6 +150,8 @@ if (
     warning_block.warning(
         """\
 Select a location on the map to view details 📍
+
+Filter with the sidebar menu on the left
 
 Scroll down to view a table of all locations 🗺
 """
