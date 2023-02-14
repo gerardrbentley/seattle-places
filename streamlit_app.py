@@ -4,6 +4,8 @@ import folium
 import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
+from streamlit_elements import elements, mui, html
+
 
 from interactors import Place, get_data
 
@@ -62,14 +64,12 @@ with st.expander("Filter Locations: ", False):
         selected_tags = st.multiselect("Tags", tags, None)
     else:
         selected_tags = set()
-    if st.checkbox("Min Price"):
-        min_price = st.number_input("Min Price ($)", 0, value=10, step=5)
+    if st.checkbox("Price Range"):
+        min_price, max_price = st.slider(
+            "Cost Per Person Range", 0, 50, value=[0, 50], step=5
+        )
     else:
-        min_price = None
-    if st.checkbox("Max Price"):
-        max_price = st.number_input("Max Price ($)", 0, value=30, step=5)
-    else:
-        max_price = None
+        min_price, max_price = None, None
 
     if st.checkbox("Min Rating"):
         min_rating = st.number_input("Min Rating (*)", 0.0, 5.0, value=4.0, step=0.5)
@@ -157,13 +157,51 @@ if (
 lookup = data[st.session_state[SELECTED_LOCATION]]
 
 with right_col:
-    st.header(lookup.name)
-    st.write("## Category: " + lookup.category)
-    st.write("## Tags: ", lookup.tags)
-    st.write("## Description:\n\n" + lookup.description.replace("\n", "\n\n"))
+    with elements("display_card"):
+        with mui.Card:
+            name_parts = lookup.name.split()
+            display_name = lookup.name[0].title()
+            if len(name_parts) > 1:
+                display_name = display_name + name_parts[1][0].title()
+            mui.CardHeader(
+                title=lookup.name,
+                subheader=lookup.category,
+                avatar=mui.Avatar(
+                    display_name,
+                    sx={
+                        "bgcolor": color_map.get(lookup.category, "red"),
+                        "color": "white",
+                    },
+                ),
+            )
 
-    st.write("## Cost Per Person: " + f"$`{lookup.cost_per_person:.2f}`")
-    st.write(f"## Rating: `{lookup.rating}`")
-    st.write(f"## Homepage: [{lookup.homepage}]()")
-    st.write(f"## Maps URL: [{lookup.maps_url}]()")
-    st.write(f"## Location: `{lookup.lat},{lookup.lon}`")
+            with mui.CardContent(sx={"flex": 1}):
+                for line in lookup.description.split("\n"):
+                    if line.strip() != "":
+                        mui.Typography(line)
+                    else:
+                        html.br()
+                html.br()
+                for tag in lookup.tags.split(","):
+                    if tag != "":
+                        mui.Chip(label=tag)
+
+                html.br()
+                html.br()
+                mui.Typography(
+                    "Cost Per Person: $" + str(lookup.cost_per_person), variant="h6"
+                )
+                mui.Rating(value=lookup.rating, precision=0.1, readOnly=True)
+            with mui.CardActions(disableSpacing=True):
+                mui.IconButton(
+                    mui.icon.Launch,
+                    href=lookup.homepage,
+                    target="_blank",
+                    rel="noreferrer",
+                )
+                mui.IconButton(
+                    mui.icon.Directions,
+                    href=lookup.maps_url,
+                    target="_blank",
+                    rel="noreferrer",
+                )
