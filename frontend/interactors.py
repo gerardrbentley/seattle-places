@@ -5,10 +5,19 @@ from typing import Dict, Tuple
 import httpx
 import toml
 
-creds = toml.load(".streamlit/secrets.toml")
+
+@lru_cache(1)
+def get_credentials(file_path: str) -> dict:
+    creds = toml.load(file_path)
+    return creds
+
+
+creds = get_credentials(".streamlit/secrets.toml")
+
 pocketbase_url = creds.get("pocketbase_url")
 pocketbase_username = creds.get("pocketbase_username")
 pocketbase_password = creds.get("pocketbase_password")
+
 google_place_api_key = creds.get("google_places_api_key")
 
 
@@ -86,6 +95,22 @@ def add_place(record):
         headers={"Authorization": token},
         json=record,
     )
+    response.raise_for_status()
+    return response
+
+
+def add_tag(record):
+    token = get_token()
+    if token == "":
+        print("Unable to get token")
+        return None
+
+    response = httpx.post(
+        f"{pocketbase_url}/api/collections/tags/records",
+        headers={"Authorization": token},
+        json=record,
+    )
+    response.raise_for_status()
     return response
 
 
@@ -171,7 +196,6 @@ def lookup_place(name: str):
     )
 
     response.raise_for_status()
-    print(response.request.url)
     candidates = response.json().get("candidates")
     if candidates is None:
         raise Exception("Place Not Found")
@@ -188,4 +212,7 @@ def lookup_place(name: str):
     )
 
     response.raise_for_status()
-    return response.json()
+    result = response.json()
+    if result.get("status") != "OK":
+        raise Exception("Places API status != 'OK'")
+    return result["result"]

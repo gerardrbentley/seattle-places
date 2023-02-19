@@ -6,7 +6,6 @@ import streamlit as st
 from streamlit_folium import st_folium
 from streamlit_elements import elements, mui, html
 
-
 from interactors import Place, get_data
 
 get_data = st.cache_data()(get_data)
@@ -143,26 +142,26 @@ with left_col:
         feature_group_to_add=fg,
     )
 
-if (
-    map_selection.get("last_object_clicked_tooltip") is None
-    and st.session_state.get(SELECTED_LOCATION) is None
-):
-    warning_block.warning(
-        """\
+warning_block.warning(
+    """\
 Select a location on the map to view details 📍
 
 Filter with the sidebar menu on the left
 
 Scroll down to view a table of all locations 🗺
 """
-    )
+)
+if (
+    map_selection.get("last_object_clicked_tooltip") is None
+    and st.session_state.get(SELECTED_LOCATION) is None
+):
     st.stop()
 
 if (
     st.session_state.get(SELECTED_LOCATION)
     != map_selection["last_object_clicked_tooltip"]
 ):
-    st.session_state[SELECTED_LOCATION] = map_selection["last_object_clicked_tooltip"]
+    st.session_state[SELECTED_LOCATION] = map_selection["last_object_clicked_tooltip"].strip()
     st.experimental_rerun()
 
 lookup = data[st.session_state[SELECTED_LOCATION]]
