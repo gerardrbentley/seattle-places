@@ -2,6 +2,11 @@
 
 Streamlit + Pocketbase app for tracking fun spots in Seattle
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://seattle.streamlit.app)
+
+![Demo gif of map and selection](demo.gif)
+
+
 ## Fly.io Pocketbase setup
 
 [reference](https://github.com/pocketbase/pocketbase/discussions/537)

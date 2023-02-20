@@ -1,0 +1,256 @@
+[
+    {
+        "id": "_pb_users_auth_",
+        "name": "users",
+        "type": "auth",
+        "system": false,
+        "schema": [
+            {
+                "id": "users_name",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "users_avatar",
+                "name": "avatar",
+                "type": "file",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "maxSize": 5242880,
+                    "mimeTypes": [
+                        "image/jpeg",
+                        "image/png",
+                        "image/svg+xml",
+                        "image/gif",
+                        "image/webp"
+                    ],
+                    "thumbs": null
+                }
+            }
+        ],
+        "listRule": "id = @request.auth.id",
+        "viewRule": "id = @request.auth.id",
+        "createRule": "",
+        "updateRule": "id = @request.auth.id",
+        "deleteRule": "id = @request.auth.id",
+        "options": {
+            "allowEmailAuth": true,
+            "allowOAuth2Auth": true,
+            "allowUsernameAuth": true,
+            "exceptEmailDomains": null,
+            "manageRule": null,
+            "minPasswordLength": 8,
+            "onlyEmailDomains": null,
+            "requireEmail": false
+        }
+    },
+    {
+        "id": "ii1mt5e28qc2p1b",
+        "name": "places",
+        "type": "base",
+        "system": false,
+        "schema": [
+            {
+                "id": "qt5u2q7y",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": true,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "xjcz14o1",
+                "name": "description",
+                "type": "text",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "utda9rrz",
+                "name": "category",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "collectionId": "k7x75d43gdpq5za",
+                    "cascadeDelete": false,
+                    "maxSelect": 1,
+                    "displayFields": [
+                        "name"
+                    ]
+                }
+            },
+            {
+                "id": "vlemofpy",
+                "name": "tags",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "collectionId": "sf5tqpvh8c1m4an",
+                    "cascadeDelete": false,
+                    "maxSelect": null,
+                    "displayFields": [
+                        "name"
+                    ]
+                }
+            },
+            {
+                "id": "0zejdueh",
+                "name": "cost_per_person",
+                "type": "number",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null
+                }
+            },
+            {
+                "id": "fbot4zh5",
+                "name": "homepage",
+                "type": "url",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "exceptDomains": null,
+                    "onlyDomains": null
+                }
+            },
+            {
+                "id": "f4oef4g6",
+                "name": "maps_url",
+                "type": "url",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "exceptDomains": null,
+                    "onlyDomains": null
+                }
+            },
+            {
+                "id": "fqxuky8c",
+                "name": "lat",
+                "type": "number",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": -90,
+                    "max": 90
+                }
+            },
+            {
+                "id": "eb37b25i",
+                "name": "lon",
+                "type": "number",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": -180,
+                    "max": 180
+                }
+            },
+            {
+                "id": "hqmygy6e",
+                "name": "rating",
+                "type": "number",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null
+                }
+            }
+        ],
+        "listRule": "",
+        "viewRule": "",
+        "createRule": "",
+        "updateRule": "",
+        "deleteRule": null,
+        "options": {}
+    },
+    {
+        "id": "k7x75d43gdpq5za",
+        "name": "categories",
+        "type": "base",
+        "system": false,
+        "schema": [
+            {
+                "id": "yl05abta",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": true,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            }
+        ],
+        "listRule": "",
+        "viewRule": "",
+        "createRule": null,
+        "updateRule": null,
+        "deleteRule": null,
+        "options": {}
+    },
+    {
+        "id": "sf5tqpvh8c1m4an",
+        "name": "tags",
+        "type": "base",
+        "system": false,
+        "schema": [
+            {
+                "id": "jr6amccj",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": true,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            }
+        ],
+        "listRule": "",
+        "viewRule": "",
+        "createRule": "",
+        "updateRule": null,
+        "deleteRule": null,
+        "options": {}
+    }
+]
