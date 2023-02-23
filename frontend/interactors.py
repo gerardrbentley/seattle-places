@@ -124,7 +124,7 @@ def get_data() -> Tuple[Dict[str, Place], Dict[str, str], Dict[str, str]]:
         f"{pocketbase_url}/api/collections/places/records",
         headers={"Authorization": token},
         params={
-            "perPage": 300,
+            "perPage": 3000,
             "sort": "name",
             "expand": ",".join(("category", "tags")),
         },
