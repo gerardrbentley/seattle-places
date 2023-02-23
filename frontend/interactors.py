@@ -125,7 +125,7 @@ def get_data() -> Tuple[Dict[str, Place], Dict[str, str], Dict[str, str]]:
         headers={"Authorization": token},
         params={
             "perPage": 3000,
-            "sort": "name",
+            "sort": "created",
             "expand": ",".join(("category", "tags")),
         },
     )
