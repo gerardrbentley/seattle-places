@@ -93,7 +93,7 @@ left_col, right_col = st.columns(2)
 with st.expander("Filtered Locations: ", False):
     st.dataframe(filtered_data)
 fg = folium.FeatureGroup(name="Seattle Locations")
-m = folium.Map(location=CENTER_START, zoom_start=ZOOM_START)
+m = folium.Map(location=CENTER_START, zoom_start=ZOOM_START, tiles='OpenStreetMap')
 
 # https://fontawesome.com/v4/icons/
 icon_map = {
